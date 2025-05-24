@@ -1,0 +1,3 @@
+run "chmod +x run_game_with_controller.sh" for permissions
+
+Then "./run_game.sh"
