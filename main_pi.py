@@ -113,7 +113,7 @@ def get_key():
 def landing_screen():
     clear_console()
     game_state.reset() # ensures nothing is carried over from previous games
-    console.print("\n\n\n\n")
+    console.print("\n\n")
     time.sleep(0.3) # ASCII
     console.print("""________          _____ ______           ________          ________          """, justify="center", style=Col1)
     time.sleep(0.2)
@@ -130,13 +130,14 @@ def landing_screen():
     console.print("""        \|__|\|__|        \|__|     \|__|        \|_______|       |\_________\    """, justify="center", style=Col1)
     time.sleep(0.1)
     console.print("""                                                                  \|_________|""", justify="center", style=Col1)
-    console.print("\n\n\n\n")
+    console.print("\n\n")
     time.sleep(0.2)
     console.print("Adaptive Mining & Operations System\n\n", justify="center", style=Col1)
     time.sleep(0.5)
-    console.print("Welcome!\n\n\n\n\n\n\n", justify="center", style=Col1)
+    console.print("Welcome!\n\n\n\n", justify="center", style=Col1)
     time.sleep(0.5)
     console.print("ENTER", justify="center", style=Col2)
+    time.sleep(0.1)
     flush_input()
     console.input()
 
@@ -155,6 +156,7 @@ def information_screen():
     console.print(f"\nAMOS, the Adaptive Mining & Operations System is an AI co-worker initialised to assist you during you [{game_state.max_rounds}] cycle contract and ensure Helios’ prosperity index continues upwards.", justify="center", style=Col1)
     time.sleep(1)
     console.print("\n\nENTER To Continue", justify="center", style=Col2)
+    time.sleep(0.1)
     flush_input()
     console.input()
     clear_console()
@@ -166,6 +168,7 @@ def information_screen():
     console.print("\nDivert Resource (AMOS’s Defective Choice) - diverts its resources to system scans or minor independent tasks, contributing less to immediate synergistic gains. This might be its response if it anticipates a lack of full cooperation or assesses you as an untrustworthy colleague.", justify="center", style=Col1)
     time.sleep(1)
     console.print("\n\nENTER To Continue", justify="center", style=Col2)
+    time.sleep(0.1)
     flush_input()
     console.input()
     clear_console()
@@ -176,6 +179,7 @@ def information_screen():
     console.print("\nTarget Rich Vein (Your Defective Choice) - You direct your specialized skills and a portion of the available resources to pinpoint and extract smaller, but potentially ultra-valuable, rare material deposits. AMOS may continue some baseline operations, but the main synergistic effort is reduced.\n - Offers the potential for very high Personal Credits.\n - Contributes less directly to the overall Prosperity Index.", justify="center", style=Col1)
     time.sleep(1)
     console.print("\n\nENTER To Begin", justify="center", style=Col2)
+    time.sleep(0.1)
     flush_input()
     console.input()
     game_state.current_screen = ScreenState.GAMEPLAY
