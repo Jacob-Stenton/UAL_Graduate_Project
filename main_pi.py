@@ -28,6 +28,8 @@ import sys
 import termios
 import tty
 
+import RPi.GPIO as GPIO
+
 game_state = GameState()
 console = Console()
 input_size = 7
@@ -84,31 +86,51 @@ def get_input_seq(sequence_length=sequence_length): # same as training - creates
     input_seq = np.array([padded_seq]) # shape (1,n,7)
     return input_seq
 
-def get_key():
-    fd = sys.stdin.fileno()
-    old_settings = termios.tcgetattr(fd)
-    try:
-        tty.setraw(fd) 
-        ch1 = sys.stdin.read(1)
-        if ch1 == '\x1b': 
+# GPIO setup
+UP_PIN = 17
+DOWN_PIN = 18
+ENTER_PIN = 27
 
-            if sys.stdin.readable(): 
-                ch2 = sys.stdin.read(1)
-                if ch2 == '[':
-                    if sys.stdin.readable():
-                        ch3 = sys.stdin.read(1)
-                        if ch3 == 'A':
-                            return 'up'
-                        elif ch3 == 'B':
-                            return 'down'
-            return None 
-        elif ch1 == '\r':
-            return 'enter'
-        return None 
-    except Exception:
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(UP_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(DOWN_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(ENTER_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+
+# Debounce state
+last_up = True
+last_down = True
+last_enter = True
+last_time = time.time()
+
+def get_key():
+    global last_up, last_down, last_enter, last_time
+
+    now = time.time()
+    if now - last_time < 0.01:  # Poll delay
         return None
-    finally:
-        termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+    last_time = now
+
+    key = None
+
+    if not GPIO.input(UP_PIN) and last_up:
+        key = 'up'
+        last_up = False
+    elif GPIO.input(UP_PIN):
+        last_up = True
+
+    if not GPIO.input(DOWN_PIN) and last_down:
+        key = 'down'
+        last_down = False
+    elif GPIO.input(DOWN_PIN):
+        last_down = True
+
+    if not GPIO.input(ENTER_PIN) and last_enter:
+        key = 'enter'
+        last_enter = False
+    elif GPIO.input(ENTER_PIN):
+        last_enter = True
+
+    return key
 
 def landing_screen():
     clear_console()
