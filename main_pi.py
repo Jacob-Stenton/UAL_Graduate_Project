@@ -106,7 +106,7 @@ def get_key():
     global last_up, last_down, last_enter, last_time
 
     now = time.time()
-    if now - last_time < 0.01:  # Poll delay
+    if now - last_time < 0.01:  
         return None
     last_time = now
 
@@ -131,6 +131,15 @@ def get_key():
         last_enter = True
 
     return key
+
+def wait_for_input():
+    flush_input()
+    
+    while True:
+        key = get_key()
+        if key == 'enter':
+            break
+        time.sleep(0.01)
 
 def landing_screen():
     clear_console()
@@ -160,8 +169,7 @@ def landing_screen():
     time.sleep(0.5)
     console.print("ENTER", justify="center", style=Col2)
     time.sleep(0.1)
-    flush_input()
-    console.input()
+    wait_for_input()
 
     game_state.trust = 0.5 # makes sure trust is reset to neutral
 
@@ -179,8 +187,7 @@ def information_screen():
     time.sleep(1)
     console.print("\n\nENTER To Continue", justify="center", style=Col2)
     time.sleep(0.1)
-    flush_input()
-    console.input()
+    wait_for_input()
     clear_console()
     console.print("\nAMOS\nAdaptive Mining & Operations System", justify="center", style=Col1)
     console.print("\n(2/3)", justify="center", style=Col1)
@@ -191,8 +198,7 @@ def information_screen():
     time.sleep(1)
     console.print("\n\nENTER To Continue", justify="center", style=Col2)
     time.sleep(0.1)
-    flush_input()
-    console.input()
+    wait_for_input()
     clear_console()
     console.print("\nAMOS\nAdaptive Mining & Operations System", justify="center", style=Col1)
     console.print("\n(3/3)", justify="center", style=Col1)
@@ -202,8 +208,7 @@ def information_screen():
     time.sleep(1)
     console.print("\n\nENTER To Begin", justify="center", style=Col2)
     time.sleep(0.1)
-    flush_input()
-    console.input()
+    wait_for_input()
     game_state.current_screen = ScreenState.GAMEPLAY
 
 
@@ -394,9 +399,8 @@ def results_screen():
 
     game_state.round_num += 1
 
-    flush_input()
     console.print("\n\nENTER To Continue To Next Cycle", justify="center", style=Col2)
-    console.input()
+    wait_for_input()
     game_state.current_screen=ScreenState.GAMEPLAY
 
 
