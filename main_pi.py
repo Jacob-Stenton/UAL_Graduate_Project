@@ -28,6 +28,9 @@ import sys
 import termios
 import tty
 
+import RPi.GPIO as GPIO
+import time
+
 game_state = GameState()
 console = Console()
 input_size = 7
@@ -84,31 +87,45 @@ def get_input_seq(sequence_length=sequence_length): # same as training - creates
     input_seq = np.array([padded_seq]) # shape (1,n,7)
     return input_seq
 
-def get_key():
-    fd = sys.stdin.fileno()
-    old_settings = termios.tcgetattr(fd)
-    try:
-        tty.setraw(fd) 
-        ch1 = sys.stdin.read(1)
-        if ch1 == '\x1b': 
 
-            if sys.stdin.readable(): 
-                ch2 = sys.stdin.read(1)
-                if ch2 == '[':
-                    if sys.stdin.readable():
-                        ch3 = sys.stdin.read(1)
-                        if ch3 == 'A':
-                            return 'up'
-                        elif ch3 == 'B':
-                            return 'down'
-            return None 
-        elif ch1 == '\r':
-            return 'enter'
-        return None 
-    except Exception:
-        return None
-    finally:
-        termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+UP_PIN = 17
+DOWN_PIN = 18
+ENTER_PIN = 27
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(UP_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(DOWN_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(ENTER_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+
+last_up = last_down = last_enter = True
+debounce_time = 0.1
+
+def get_key():
+    global last_up, last_down, last_enter
+    time.sleep(0.01)
+
+    if not GPIO.input(UP_PIN) and last_up:
+        last_up = False
+        time.sleep(debounce_time)
+        return 'up'
+    elif GPIO.input(UP_PIN):
+        last_up = True
+
+    if not GPIO.input(DOWN_PIN) and last_down:
+        last_down = False
+        time.sleep(debounce_time)
+        return 'down'
+    elif GPIO.input(DOWN_PIN):
+        last_down = True
+
+    if not GPIO.input(ENTER_PIN) and last_enter:
+        last_enter = False
+        time.sleep(debounce_time)
+        return 'enter'
+    elif GPIO.input(ENTER_PIN):
+        last_enter = True
+
+    return None
 
 def landing_screen():
     clear_console()
