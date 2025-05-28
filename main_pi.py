@@ -4,8 +4,6 @@ from events import ALL_EVENTS
 
 from agent import ReplayBuffer, encode_state, DRQN, train_step, get_max_reward, optimizer
 
-from collections import deque
-
 from rich.console import Console, Group
 from rich.text import Text
 from rich.style import Style
@@ -14,19 +12,12 @@ from rich.live import Live
 from rich.align import Align
 from rich.panel import Panel
 
-
-from pynput import keyboard
 import numpy as np
 
 import os 
 import time
 import random
-import threading
 import random
-
-import sys
-import termios
-import tty
 
 import RPi.GPIO as GPIO
 
