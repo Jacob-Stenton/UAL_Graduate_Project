@@ -93,7 +93,7 @@ last_down = True
 last_enter = True
 last_time = time.time()
 
-def get_key():
+def get_key(): # For gameplay loop - 
     global last_up, last_down, last_enter, last_time
 
     now = time.time()
@@ -104,7 +104,7 @@ def get_key():
     key = None
 
     if not GPIO.input(UP_PIN) and last_up:
-        key = 'up'
+        key = 'up' # Pin 17
         last_up = False
     elif GPIO.input(UP_PIN):
         last_up = True
