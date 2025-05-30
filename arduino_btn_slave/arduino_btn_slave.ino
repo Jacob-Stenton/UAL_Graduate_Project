@@ -9,7 +9,7 @@ int downButtonVal = 0;
 int enterButtonVal = 0;
 
 void setup() {
-  Wire.begin(0x8);
+  Wire.begin(0x08);
 
   pinMode(upButton, INPUT_PULLUP);
   pinMode(downButton, INPUT_PULLUP);
