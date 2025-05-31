@@ -22,7 +22,7 @@ import random
 import RPi.GPIO as GPIO
 
 game_state = GameState()
-console = Console()
+console = Console(color_system="256")
 input_size = 7
 batch_size = 4 # updates every 4 games - expecting way less games played with actual players
 model = DRQN(input_size)

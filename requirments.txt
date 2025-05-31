@@ -3,3 +3,5 @@ tensorflow
 rich
 matplotlib
 pynput
+RPi.GPIO
+smbus2
