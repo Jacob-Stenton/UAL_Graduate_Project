@@ -19,7 +19,10 @@ import time
 import random
 import random
 
-import RPi.GPIO as GPIO
+import serial
+
+ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
+time.sleep(2)
 
 game_state = GameState()
 console = Console(color_system="256")
@@ -77,51 +80,13 @@ def get_input_seq(sequence_length=sequence_length): # same as training - creates
     input_seq = np.array([padded_seq]) # shape (1,n,7)
     return input_seq
 
-# GPIO setup
-UP_PIN = 17
-DOWN_PIN = 18
-ENTER_PIN = 27
-
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(UP_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.setup(DOWN_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.setup(ENTER_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-
-# Debounce state
-last_up = True
-last_down = True
-last_enter = True
-last_time = time.time()
-
-def get_key(): # For gameplay loop - 
-    global last_up, last_down, last_enter, last_time
-
-    now = time.time()
-    if now - last_time < 0.01:  
-        return None
-    last_time = now
-
-    key = None
-
-    if not GPIO.input(UP_PIN) and last_up:
-        key = 'up' # Pin 17
-        last_up = False
-    elif GPIO.input(UP_PIN):
-        last_up = True
-
-    if not GPIO.input(DOWN_PIN) and last_down:
-        key = 'down'
-        last_down = False
-    elif GPIO.input(DOWN_PIN):
-        last_down = True
-
-    if not GPIO.input(ENTER_PIN) and last_enter:
-        key = 'enter'
-        last_enter = False
-    elif GPIO.input(ENTER_PIN):
-        last_enter = True
-
-    return key
+def get_key():
+    if ser.in_waiting > 0:
+        line_of_data = ser.readline()
+        key = line_of_data.decode('utf-8').strip()
+        return key
+    
+    return None
 
 def wait_for_input():
     flush_input()

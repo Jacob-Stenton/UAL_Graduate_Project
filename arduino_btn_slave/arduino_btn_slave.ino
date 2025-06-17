@@ -1,39 +1,44 @@
-#include <Wire.h>
 
 #define upButton 10
 #define downButton 11
 #define enterButton 12
 
-int upButtonVal = 0;
-int downButtonVal = 0;
-int enterButtonVal = 0;
+int upButtonState = 0;
+int downButtonState = 0;
+int enterButtonState = 0;
+
+int lastUpButtonState = 0;
+int lastDownButtonState = 0;
+int lastEnterButtonState = 0;
 
 void setup() {
-  Wire.begin(0x08);
-
+  Serial.begin(9600);
   pinMode(upButton, INPUT_PULLUP);
   pinMode(downButton, INPUT_PULLUP);
   pinMode(enterButton, INPUT_PULLUP);
-
 }
 
 void loop() {
-  
-  upButtonVal = digitalRead(upButton);
-  downButtonVal = digitalRead(downButton);
-  enterButtonVal = digitalRead(enterButton);
+  upButtonState = digitalRead(upButton);
+  downButtonState = digitalRead(downButton);
+  enterButtonState = digitalRead(enterButton);
 
-  if (upButtonVal == LOW) {
-    Wire.write("up");
+  if (upButtonState == LOW && lastUpButtonState == HIGH) {
+    Serial.println("up");
+    delay(50); 
   }
 
-  if (downButtonVal == LOW) {
-    Wire.write("down");
+  if (downButtonState == LOW && lastDownButtonState == HIGH) {
+    Serial.println("down");
+    delay(50); 
   }
 
-  if (enterButtonVal == LOW) {
-    Wire.write("enter");
+  if (enterButtonState == LOW && lastEnterButtonState == HIGH) {
+    Serial.println("enter");
+    delay(50); 
   }
 
-  delay(100);
+  lastUpButtonState = upButtonState;
+  lastDownButtonState = downButtonState;
+  lastEnterButtonState = enterButtonState;
 }
