@@ -7,3 +7,7 @@ Technical Stack:
  - User Interface: The project features a professional, modern terminal-based UI developed with the Rich library, providing a clean and engaging user experience.
  - Input Handling: Player input is managed with the Pynput library, which allows for real-time keyboard control within the terminal environment.
  - Training: The agent is trained on a suite of pre-programmed bots that exhibit various strategies (e.g., cooperating, defecting, and retaliatory behaviors), demonstrating a systematic and thorough approach to model training.
+
+<img width="2784" height="2060" alt="Game Screens" src="https://github.com/user-attachments/assets/a7b42bfe-5472-45c4-a313-1bf690e0c629" />
+
+![IMG-20250623-WA0000](https://github.com/user-attachments/assets/7c2dadeb-096d-4f97-b49a-da054aac8765)
