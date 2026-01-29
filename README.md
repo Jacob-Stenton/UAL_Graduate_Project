@@ -10,7 +10,9 @@ Technical Stack:
 <img width="2784" height="2060" alt="Game Screens" src="https://github.com/user-attachments/assets/a7b42bfe-5472-45c4-a313-1bf690e0c629" />
 
 ![IMG-20250623-WA0000](https://github.com/user-attachments/assets/7c2dadeb-096d-4f97-b49a-da054aac8765)
-This casing was designed in Blender 3D and 3d printed for a final showcase. - This was an extension on top of my final graduation project.
+This casing was designed in Blender 3D and 3d printed for a final showcase.
+ - This was an extension on top of my final graduation project.
+
 Input Handling: 
  - An Arduino handles button inputs and sends them via serial to a Raspberry Pi, which is running the game and RL model. This was done because the screen required every pin on the RPi to function.
- - Player input is managed with the Pynput library, which allows for real-time keyboard control within the terminal environment. The arduino emulated keyboard cotrolls sending either up, down or enter.
+ - Player input is managed with the Pynput library, which allows for real-time keyboard control within the terminal environment. The arduino emulated keyboard controls sending either up, down or enter.
